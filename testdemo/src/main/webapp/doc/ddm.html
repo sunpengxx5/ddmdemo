@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DDM 数据库测试模型与相关rest接口使用说明</title>
+    <meta charset='utf-8'>
+    <link href='https://d31qtcb7c58z3n.cloudfront.net/res-min/themes/marxico.css' rel='stylesheet'>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id='preview-contents' class='note-content'>
+
+    <h1>DDM 数据库测试模型与相关rest接口使用说明</h1>
+
+    <h2>一、DDM 测试模型说明</h2>
+
+    <br>
+    <div id='preview-contents2' class='note-content'>
+        <p>
+            <img type="image/png" src="./image/ddm-demo.png">
+        </p>
+    </div>
+
+    <h2>二、主要接口总览</h2>
+
+    <ul><li><strong>syntheticTest</strong> – 综合测试接口</li>
+        <li><strong>singleSelect</strong> – 单记录查询测试接口</li>
+        <li><strong>bathSelect</strong> – 批量录查询测试接口</li>
+        <li><strong>write</strong>  – 写操作测试接口（包含插入、更新和删除）</li>
+    </ul>
+
+    <h2>三、测试接口详细说明</h2>
+
+    <h3 id="1综合测试接口">1、综合测试接口</h3>
+
+    <ul><li>rest接口：<strong>v1/rest/syntheticTest</strong></li>
+        <li>请求类别：Get</li>
+        <li>请求参数：无</li>
+        <li>返回结果：</li>
+    </ul>
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs">
+        <div class="hljs-line">    {</div><div class="hljs-line">        <span class="hljs-attr">"errCode"</span>:<span class="hljs-number">200</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"result(ms)"</span>:<span class="hljs-string">"33 3 2 9 5 4 5 3 8 6"</span>
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+    <ul><li>说明：result(ms):对应以下十个10个sql在pod中调用数据库的响应时间。</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-sql hljs"><div class="hljs-line">        //read
+</div><div class="hljs-line">        "<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">" + id
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> c <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">" + id
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> c <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">between</span> <span class="hljs-string">" + id + "</span> <span class="hljs-keyword">and</span> <span class="hljs-string">" + (id + 5)
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> k <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">between</span> <span class="hljs-string">" + id + "</span> <span class="hljs-keyword">and</span> <span class="hljs-string">" + (id + 5)
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> <span class="hljs-keyword">sum</span>(k) <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">between</span> <span class="hljs-string">" + id + "</span> <span class="hljs-keyword">and</span> <span class="hljs-string">" + (id + 5)
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> c <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">between</span> <span class="hljs-string">" + id + "</span> <span class="hljs-keyword">and</span> <span class="hljs-string">" + (id + 5) + "</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> c<span class="hljs-string">"
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> c <span class="hljs-keyword">from</span> sbtest1 <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">between</span>  <span class="hljs-string">" + id + "</span> <span class="hljs-keyword">and</span> <span class="hljs-string">" + (id + 5) +"</span> <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> c<span class="hljs-string">"
+</span></div><div class="hljs-line">        //write
+</div><div class="hljs-line">        "<span class="hljs-keyword">update</span> sbtest1  <span class="hljs-keyword">set</span> c=<span class="hljs-string">'" + UUID.randomUUID().toString() + "'</span> <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">" + id
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span>  sbtest1 (<span class="hljs-keyword">id</span>, k, c, <span class="hljs-keyword">pad</span>) <span class="hljs-keyword">values</span>(<span class="hljs-string">" + insertId + "</span>,<span class="hljs-number">234</span>,<span class="hljs-string">'test'</span>,<span class="hljs-string">'test'</span>)<span class="hljs-string">"
+</span></div><div class="hljs-line">        "<span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span>  sbtest1  <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span>=<span class="hljs-string">" + insertId  </span>
+</div></code></pre>
+
+
+
+    <h3 id="2单记录查询测试接口">2、单记录查询测试接口</h3>
+
+    <ul><li>rest接口：<strong>v1/rest/singleSelect</strong></li>
+        <li>请求类别：Post</li>
+        <li>请求参数：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">    {
+</div><div class="hljs-line">        <span class="hljs-attr">"sql"</span>:<span class="hljs-string">"select * from sbtest1 where id=20"</span>
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+    <ul><li>返回结果：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">     {
+</div><div class="hljs-line">        <span class="hljs-attr">"bodyArray"</span>:[{
+</div><div class="hljs-line">          <span class="hljs-attr">"c"</span>:<span class="hljs-string">"7aaa1fc1-f6ae-4579-9b85-9d8358bbe00a"</span>,
+</div><div class="hljs-line">          <span class="hljs-attr">"id"</span>:<span class="hljs-string">"20"</span>,
+</div><div class="hljs-line">          <span class="hljs-attr">"k"</span>:<span class="hljs-string">"20"</span>,
+</div><div class="hljs-line">          <span class="hljs-attr">"pad"</span>:<span class="hljs-string">"abeab96b-56af-43be-b8c9-836432e67d45"</span>
+</div><div class="hljs-line">          }],
+</div><div class="hljs-line">        <span class="hljs-attr">"errCode"</span>:<span class="hljs-number">200</span>
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+    <h3 id="3批量录查询测试接口">3、批量录查询测试接口</h3>
+
+    <ul><li>rest接口：<strong>v1/rest/bathSelect</strong></li>
+        <li>请求类别：Post</li>
+        <li>请求参数：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">    {
+</div><div class="hljs-line">        <span class="hljs-attr">"sql"</span>:<span class="hljs-string">"select * from sbtest1 where id&lt;=20 and id&gt;=19"</span>
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+    <ul><li>返回结果：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">{
+</div><div class="hljs-line">    <span class="hljs-attr">"body"</span>:[{
+</div><div class="hljs-line">        <span class="hljs-attr">"c"</span>:<span class="hljs-string">"7024a999-1abe-4294-bbe7-12c940114260"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"id"</span>:<span class="hljs-string">"19"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"k"</span>:<span class="hljs-string">"19"</span>,<span class="hljs-attr">"pad"</span>:<span class="hljs-string">"45ee9470-ec0d-40d2-bb92-a32c088d3f6c"</span>
+</div><div class="hljs-line">        },{
+</div><div class="hljs-line">        <span class="hljs-attr">"c"</span>:<span class="hljs-string">"7aaa1fc1-f6ae-4579-9b85-9d8358bbe00a"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"id"</span>:<span class="hljs-string">"20"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"k"</span>:<span class="hljs-string">"20"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"pad"</span>:<span class="hljs-string">"abeab96b-56af-43be-b8c9-836432e67d45"</span>
+</div><div class="hljs-line">        }],
+</div><div class="hljs-line">    <span class="hljs-attr">"errCode"</span>:<span class="hljs-number">200</span>
+</div><div class="hljs-line">}
+</div></code></pre>
+
+
+
+    <h3 id="4写操作测试接口包含插入更新和删除">4、写操作测试接口（包含插入、更新和删除）</h3>
+
+    <ul><li>rest接口：<strong>v1/rest/write</strong></li>
+        <li>请求类别：Post</li>
+        <li>请求参数：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">    {
+</div><div class="hljs-line">        <span class="hljs-attr">"sql"</span>:<span class="hljs-string">"insert into sbtest1(id,k,c,pad) values(1000103,23,'xx','ff')"</span>
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+    <ul><li>返回结果：</li>
+    </ul>
+
+
+
+    <pre class="prettyprint hljs-dark"><code class="language-json hljs"><div class="hljs-line">    {
+</div><div class="hljs-line">        <span class="hljs-attr">"errCode"</span>:<span class="hljs-number">200</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">"result"</span>:<span class="hljs-number">1</span>       #受影响的行数
+</div><div class="hljs-line">    }
+</div></code></pre>
+
+</div></body></html>
