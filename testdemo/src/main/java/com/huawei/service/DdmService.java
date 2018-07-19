@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class DdmService {
 
-    private static Logger log = Logger.getLogger(DdmController.class);
+    private static Logger log = Logger.getLogger(DdmService.class);
 
     @Autowired
     private Sbtest1Dao sbtest1Service;
